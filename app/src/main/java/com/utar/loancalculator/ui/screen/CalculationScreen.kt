@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -117,7 +118,11 @@ fun LoanCalculationForm(
                 loanAmount = it
             },
             label = { Text(text = "Loan Amount") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            singleLine = true,
             suffix = { Text(text = "RM") },
             placeholder = { Text("Enter the loan amount") },
             isError = loanAmount.toDoubleOrNull()?.let { it <= 0 } ?: false,
@@ -131,7 +136,11 @@ fun LoanCalculationForm(
             placeholder = { Text(text = "Enter the interest rate") },
             suffix = { Text(text = "%") },
             isError = interestRate.toDoubleOrNull()?.let { it <= 0.0 || it > 100.0 } ?: false,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            singleLine = true,
             modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.size(8.dp))
         OutlinedTextField(value = numberOfRepayment,
@@ -155,7 +164,11 @@ fun LoanCalculationForm(
                         })
                 }
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            singleLine = true,
             isError = numberOfRepayment.toDoubleOrNull()?.let { it <= 0 || it > maxTenureMonths }
                 ?: false,
             modifier = Modifier.fillMaxWidth())
