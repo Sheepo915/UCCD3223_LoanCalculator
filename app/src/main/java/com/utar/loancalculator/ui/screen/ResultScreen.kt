@@ -56,7 +56,7 @@ import java.util.Calendar
 import java.util.Locale
 import kotlin.math.ceil
 
-const val PAGE_SIZE = 20
+const val PAGE_SIZE = 12
 
 @Composable
 fun ResultScreen(
@@ -128,7 +128,7 @@ fun ResultScreen(
             )
 
             LoanType.HOUSING_LOAN -> Text(
-                text = LoanType.PERSONAL_LOAN.name.toTitleCase(),
+                text = LoanType.HOUSING_LOAN.name.toTitleCase(),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -151,7 +151,7 @@ fun ResultScreen(
             )
             Text(
                 text = "Total Repayment: RM %.2f".format(
-                    locale = Locale.getDefault(), amortizationSchedule.last().remainingBalance
+                    locale = Locale.getDefault(), amortizationSchedule.last().accumulatedRepayment
                 )
             )
         }
@@ -307,14 +307,16 @@ fun StackedTableRow(entry: AmortizationScheduleEntry) {
         modifier = Modifier.padding(8.dp)
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
+            DataRow(label = "Payment Number", value = entry.paymentNumber.toString())
             DataRow(label = "Payment Date", value = formattedDate)
             DataRow(
                 label = "Principal Paid (RM)", value = "%.2f".format(entry.principalPayment)
             )
             DataRow(label = "Interest Paid (RM)", value = "%.2f".format(entry.interestPayment))
-            DataRow(label = "Monthly Repayment (RM)", value = "%.2f".format(entry.totalPayment))
+            DataRow(label = "Monthly Repayment (RM)", value = "%.2f".format(entry.monthlyPayment))
+            DataRow(label = "Remaining Balance (RM)", value = "%.2f".format(entry.remainingBalance))
             DataRow(
-                label = "Accumulative Repayment (RM)", value = "%.2f".format(entry.remainingBalance)
+                label = "Accumulative Repayment (RM)", value = "%.2f".format(entry.accumulatedRepayment)
             )
         }
     }

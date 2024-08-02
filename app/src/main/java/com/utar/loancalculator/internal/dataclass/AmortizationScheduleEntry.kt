@@ -1,10 +1,11 @@
 package com.utar.loancalculator.internal.dataclass
 
 data class AmortizationScheduleEntry(
-    val month: Int,
+    val paymentNumber: Int,
     val principalPayment: Double,
     val interestPayment: Double,
-    val totalPayment: Double,
+    val monthlyPayment: Double,
     val remainingBalance: Double,
+    val accumulatedRepayment: Double,
     val paymentDate: Long
 )

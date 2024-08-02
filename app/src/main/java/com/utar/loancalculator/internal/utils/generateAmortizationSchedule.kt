@@ -5,119 +5,83 @@ import java.util.Calendar
 import kotlin.math.pow
 
 fun generatePersonalAmortizationSchedule(
-    principal: Double, annualInterestRate: Double, months: Int, startDate: Long
+    principal: Double, annualInterestRate: Double, numberOfInstalments: Int, startDate: Long
 ): MutableList<AmortizationScheduleEntry> {
     val amortizationSchedule = mutableListOf<AmortizationScheduleEntry>()
 
     val monthlyInterestRate = (annualInterestRate / 12) / 100
-    val monthlyInstallment = (principal * (1 + monthlyInterestRate * months)) / months
+    val monthlyInstallment = (principal * (1 + monthlyInterestRate * numberOfInstalments)) / numberOfInstalments
 
     val interestPayment = principal * monthlyInterestRate
     val principalPayment = monthlyInstallment - interestPayment
 
-    var initialBalance = monthlyInstallment
+    var initialBalance = principal
+    var accumulatedRepayment = monthlyInstallment
 
-    for (month in 1..months) {
+    for (instalment in 1..numberOfInstalments) {
         val calendar = Calendar.getInstance().apply {
             timeInMillis = startDate
-            add(Calendar.MONTH, month - 1)
+            add(Calendar.MONTH, instalment - 1)
         }
         val paymentDate = calendar.timeInMillis
 
         amortizationSchedule.add(
             AmortizationScheduleEntry(
-                month = month,
+                paymentNumber = instalment,
                 principalPayment = principalPayment,
                 interestPayment = interestPayment,
-                totalPayment = monthlyInstallment,
+                monthlyPayment = monthlyInstallment,
                 remainingBalance = initialBalance,
+                accumulatedRepayment = accumulatedRepayment,
                 paymentDate = paymentDate
             )
         )
 
-        initialBalance += monthlyInstallment
+        initialBalance -= principalPayment
+        accumulatedRepayment += monthlyInstallment
     }
 
     return amortizationSchedule
 }
 
 fun generateHousingAmortizationSchedule(
-    principal: Double, annualInterestRate: Double, months: Int, startDate: Long
+    principal: Double, annualInterestRate: Double, numberOfInstalments: Int, startDate: Long
 ): MutableList<AmortizationScheduleEntry> {
     val monthlyInterestRate = (annualInterestRate / 12) / 100
     val monthlyInstallment =
-        (principal * monthlyInterestRate * (1 + monthlyInterestRate).pow(months)) / ((1 + monthlyInterestRate).pow(
-            months
+        (principal * monthlyInterestRate * (1 + monthlyInterestRate).pow(numberOfInstalments)) / ((1 + monthlyInterestRate).pow(
+            numberOfInstalments
         ) - 1)
-    var remainingBalance = principal
     val amortizationSchedule = mutableListOf<AmortizationScheduleEntry>()
 
-    var initialBalance = monthlyInstallment
+    var accumulatedRepayment = monthlyInstallment
+    var initialBalance = principal
 
-
-
-    for (month in 1..months) {
-        val interestPayment = remainingBalance * monthlyInterestRate
+    for (instalment in 1..numberOfInstalments) {
+        val interestPayment = initialBalance * monthlyInterestRate
         val principalPayment = monthlyInstallment - interestPayment
 
 
         val calendar = Calendar.getInstance().apply {
             timeInMillis = startDate
-            add(Calendar.MONTH, month - 1)
+            add(Calendar.MONTH, instalment - 1)
         }
         val paymentDate = calendar.timeInMillis
 
         amortizationSchedule.add(
             AmortizationScheduleEntry(
-                month = month,
+                paymentNumber = instalment,
                 principalPayment = principalPayment,
                 interestPayment = interestPayment,
-                totalPayment = monthlyInstallment,
+                monthlyPayment = monthlyInstallment,
                 remainingBalance = initialBalance,
+                accumulatedRepayment = accumulatedRepayment,
                 paymentDate = paymentDate
             )
         )
 
-        remainingBalance -= principalPayment
-        initialBalance += monthlyInstallment
-    }
-
-    return amortizationSchedule
-}
-
-fun generateHousingAmortizationSchedule_V1(
-    principal: Double, annualInterestRate: Double, months: Int, startDate: Long
-): MutableList<AmortizationScheduleEntry> {
-    val monthlyInterestRate = (annualInterestRate / 12) / 100
-    val monthlyPayment =
-        (principal * monthlyInterestRate * (1 + monthlyInterestRate).pow(months)) / ((1 + monthlyInterestRate).pow(
-            months
-        ) - 1)
-    var remainingBalance = principal
-    val amortizationSchedule = mutableListOf<AmortizationScheduleEntry>()
-
-    for (month in 1..months) {
-        val interestPayment = remainingBalance * monthlyInterestRate
-        val principalPayment = monthlyPayment - interestPayment
-
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = startDate
-            add(Calendar.MONTH, month - 1)
-        }
-        val paymentDate = calendar.timeInMillis
-
-        amortizationSchedule.add(
-            AmortizationScheduleEntry(
-                month = month,
-                principalPayment = principalPayment,
-                interestPayment = interestPayment,
-                totalPayment = monthlyPayment,
-                remainingBalance = remainingBalance,
-                paymentDate = paymentDate
-            )
-        )
-
-        remainingBalance -= principalPayment
+        initialBalance -= principalPayment
+        accumulatedRepayment += monthlyInstallment
     }
 
     return amortizationSchedule
