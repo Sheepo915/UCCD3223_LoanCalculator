@@ -116,7 +116,7 @@ class MainActivity : ComponentActivity() {
                                         } else bottomNavigationItem.unselectedIcon,
                                         contentDescription = bottomNavigationItem.title
                                     )
-                                })
+                                }, label = { Text(text = bottomNavigationItem.title) })
                             }
                         }
                     }
