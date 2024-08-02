@@ -84,7 +84,6 @@ fun LoanCalculationForm(
     val maxTenureYears = when (loanType) {
         LoanType.PERSONAL_LOAN -> minOf(10, 60 - userAge)
         LoanType.HOUSING_LOAN -> minOf(35, 70 - userAge)
-        else -> 0
     }
     val maxTenureMonths = minOf(maxTenureYears * 12, 120)
 
