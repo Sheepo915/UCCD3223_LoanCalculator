@@ -31,7 +31,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,12 +46,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.core.text.isDigitsOnly
 import com.utar.loancalculator.R
 import com.utar.loancalculator.internal.dataclass.Setting
 import com.utar.loancalculator.internal.dataclass.db.SavedCalculation
@@ -86,9 +85,10 @@ fun SettingScreen(
     }
 
     val birthYear = dataStore.getBirthYear.collectAsState(initial = 0)
-    val temp = remember {
-        mutableStateOf(birthYear.value.toString())
+    var temp by remember {
+        mutableStateOf("")
     }
+
     val coroutineScope = rememberCoroutineScope()
 
     val dataSettings = listOf<Setting>(Setting(icon = Icons.Outlined.Delete,
@@ -116,7 +116,7 @@ fun SettingScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 20.dp, top = 20.dp, end = 20.dp)
+            .padding(horizontal = 20.dp)
             .then(modifier)
     ) {
         LazyColumn(
@@ -227,24 +227,27 @@ fun SettingScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Enter your birth year. Current set to ${birthYear.value}",
+                        text = "Enter your birth year. Currently set to ${birthYear.value}",
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp)
                     )
-                    OutlinedTextField(value = temp.value,
+                    OutlinedTextField(value = temp,
                         onValueChange = {
-                            temp.value = it
+                            temp = it
                         },
                         label = {
                             Text(
                                 text = "Birth Year"
                             )
                         },
-                        isError = temp.value.toIntOrNull() !in 1940..Calendar.getInstance().get(Calendar.YEAR),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        placeholder = { Text(text = birthYear.value.toString()) },
+                        isError = temp.toIntOrNull() !in 1940..Calendar.getInstance()
+                            .get(Calendar.YEAR),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                        singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -264,9 +267,10 @@ fun SettingScreen(
                         TextButton(onClick = {
                             isDialogShown = false
                             coroutineScope.launch {
-                                dataStore.updateBirthYear(temp.value.toInt())
+                                dataStore.updateBirthYear(temp.toInt())
                             }
-                        }) {
+                        }, enabled = temp.toIntOrNull() in 1940..Calendar.getInstance()
+                            .get(Calendar.YEAR)) {
                             Text(text = "Save", fontWeight = FontWeight.Medium)
                         }
                     }
