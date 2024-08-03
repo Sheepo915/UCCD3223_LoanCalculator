@@ -1,6 +1,5 @@
 package com.utar.loancalculator.ui.component
 
-import android.util.Log
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -36,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -188,24 +186,4 @@ fun MonthPicker(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun MonthPicker() {
-    val calendar = Calendar.getInstance()
-    val currentMonth = calendar.get(Calendar.MONTH) + 1
-    val currentYear = calendar.get(Calendar.YEAR)
-
-    val startDate = 1722155005981
-    val endDate = 1769588605981
-
-    MonthPicker(startDate = startDate,
-        endDate = endDate,
-        currentMonth = currentMonth,
-        currentYear = currentYear,
-        onApply = { month, year ->
-            Log.d("DEBUG", "month: $month, year: $year")
-        },
-        onDismissRequest = {})
 }

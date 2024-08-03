@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -30,10 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.utar.loancalculator.R
-import com.utar.loancalculator.internal.dataclass.CalculationInput
 import com.utar.loancalculator.internal.enums.LoanType
-import com.utar.loancalculator.ui.component.ListCalculations
-import java.util.Date
 
 @Composable
 fun HomeScreen(navHost: NavController, modifier: Modifier) {

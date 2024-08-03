@@ -91,19 +91,19 @@ fun SettingScreen(
 
     val coroutineScope = rememberCoroutineScope()
 
-    val dataSettings = listOf<Setting>(Setting(icon = Icons.Outlined.Delete,
+    val dataSettings = listOf(Setting(icon = Icons.Outlined.Delete,
         iconColor = MaterialTheme.colorScheme.error,
         title = "Delete Selected Saved Data",
         onClick = {
             isDialogShown = true
             alertContext = SettingDialogContext.DELETE_DATA
-        }), Setting(icon = Icons.Outlined.Clear, title = "Delete All Saved Data", onClick = {
+        }), Setting(icon = Icons.Outlined.Clear, iconColor = MaterialTheme.colorScheme.onBackground, title = "Delete All Saved Data", onClick = {
         isDialogShown = true
         alertContext = SettingDialogContext.DELETE_ALL_DATA
     })
     )
 
-    val birthDateSetting = listOf<Setting>(
+    val birthDateSetting = listOf(
         Setting(icon = ImageVector.vectorResource(id = R.drawable.ic_calendar_month_outlined),
             iconColor = MaterialTheme.colorScheme.onBackground,
             title = "Change Birth Year",

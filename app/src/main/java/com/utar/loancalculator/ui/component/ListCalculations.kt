@@ -23,8 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.utar.loancalculator.R
-import com.utar.loancalculator.internal.dataclass.CalculationData
-import com.utar.loancalculator.internal.dataclass.CalculationInput
 import com.utar.loancalculator.internal.dataclass.db.SavedCalculation
 import com.utar.loancalculator.internal.enums.LoanType
 import com.utar.loancalculator.internal.utils.toTitleCase

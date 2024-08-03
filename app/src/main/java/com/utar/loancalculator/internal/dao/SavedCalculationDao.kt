@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Upsert
 import com.utar.loancalculator.internal.dataclass.db.SavedCalculation
 import kotlinx.coroutines.flow.Flow
 
