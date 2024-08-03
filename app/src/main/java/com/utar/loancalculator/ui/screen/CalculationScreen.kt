@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -51,7 +52,6 @@ import java.util.Date
 import java.util.Locale
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalculationScreen(
     navController: NavController, loanType: LoanType, modifier: Modifier = Modifier
@@ -107,6 +107,7 @@ fun LoanCalculationForm(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
+            .imePadding()
             .padding(20.dp)
             .then(modifier)
     ) {
@@ -125,7 +126,7 @@ fun LoanCalculationForm(
             suffix = { Text(text = "RM") },
             placeholder = { Text("Enter the loan amount") },
             isError = loanAmount.toDoubleOrNull()?.let { it <= 0 } ?: false,
-            modifier = Modifier.fillMaxWidth())
+            modifier = Modifier.fillMaxWidth().imePadding())
         Spacer(modifier = Modifier.size(8.dp))
         OutlinedTextField(value = interestRate,
             onValueChange = {
